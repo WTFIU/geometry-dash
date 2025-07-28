@@ -3,170 +3,129 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Geometry Dash Lite - WTIFU</title>
+<title>Geometry Dash Lite - Minimal</title>
 <style>
-  :root {
-    --bg-dark: #121214;
-    --bg-light: #f0f0f0;
-    --text-dark: #e0e0e0;
-    --text-light: #111;
-    --accent: #5ac8fa;
-    --accent-dark: #4aa1f3;
-    --button-bg: #2e2f34;
-    --button-hover: #4aa1f3;
-  }
-
-  body {
-    margin: 0; padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg-dark);
-    color: var(--text-dark);
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    transition: background-color 0.4s, color 0.4s;
-  }
-  header {
-    padding: 1rem 2rem;
-    text-align: center;
-    background-color: var(--button-bg);
-    box-shadow: 0 3px 8px rgba(42, 132, 255, 0.3);
-  }
-  header h1 {
-    margin: 0;
-    color: var(--accent);
-    font-size: 2rem;
-  }
-
-  #theme-toggle {
-    margin-top: 0.5rem;
-    cursor: pointer;
-    background: var(--button-bg);
-    color: var(--text-dark);
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    font-weight: 600;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  #theme-toggle:hover {
-    background: var(--button-hover);
-    color: var(--text-light);
-  }
-
-  main {
-    flex-grow: 1;
-    max-width: 800px;
-    margin: 2rem auto 1rem;
-    padding: 0 1rem;
-    text-align: center;
-  }
-
-  #game-container {
-    position: relative;
-    margin: 1rem auto 2rem;
-    width: 100%;
-    max-width: 600px;
-    height: 150px;
-    border: 3px solid var(--accent);
-    border-radius: 12px;
-    background: #222;
-    overflow: hidden;
-  }
-
-  canvas {
-    display: block;
-    margin: 0 auto;
-    background: #121214;
-  }
-
-  #support {
-    margin-top: 2rem;
-    padding: 1.5rem;
-    border: 2px solid var(--accent);
-    border-radius: 12px;
-    background-color: #222;
-    box-shadow: 0 0 10px var(--accent);
-  }
-
-  #support h2 {
-    color: var(--accent);
-    margin-bottom: 1rem;
-  }
-
-  #support a {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    background: var(--accent);
-    color: #121214;
-    font-weight: 700;
-    border-radius: 8px;
-    text-decoration: none;
-    box-shadow: 0 5px 10px rgba(90, 200, 250, 0.7);
-    transition: background-color 0.3s, box-shadow 0.3s;
-  }
-  #support a:hover {
-    background-color: #3bb7ff;
-    box-shadow: 0 7px 15px rgba(90, 200, 250, 1);
-  }
-
-  footer {
-    text-align: center;
-    padding: 1rem;
-    font-size: 0.9rem;
-    color: #777;
-    background: #111;
-  }
-
-  /* Light mode overrides */
-  body.light {
-    background-color: var(--bg-light);
-    color: var(--text-light);
-  }
-  body.light header {
-    background-color: #dbeeff;
-    box-shadow: 0 3px 8px rgba(90, 200, 250, 0.5);
-  }
-  body.light #game-container {
-    background: #f0f0f0;
-    border-color: #4aa1f3;
-  }
-  body.light #support {
-    background: #e6f3ff;
-    border-color: #4aa1f3;
-    box-shadow: 0 0 10px #4aa1f3;
-  }
-  body.light #support a {
-    background: #4aa1f3;
-    color: #fff;
-    box-shadow: 0 5px 10px rgba(74, 161, 243, 0.7);
-  }
-  body.light #support a:hover {
-    background-color: #3a93dd;
-    box-shadow: 0 7px 15px rgba(74, 161, 243, 1);
-  }
-
-  /* Responsive */
-  @media (max-width: 480px) {
-    #game-container {
-      height: 120px;
-    }
-    header h1 {
-      font-size: 1.5rem;
-    }
-  }
+  body { margin: 0; background: #121214; display: flex; justify-content: center; align-items: center; height: 100vh; }
+  canvas { background: #222; display: block; border: 3px solid #5ac8fa; border-radius: 12px; }
 </style>
 </head>
 <body>
-<header>
-  <h1>Geometry Dash Lite</h1>
-  <button id="theme-toggle" aria-label="Toggle dark/light mode">🌓 Toggle Light/Dark Mode</button>
-</header>
-<main>
-  <div id="game-container">
-    <canvas id="game" width="600" height="150" aria-label="Geometry Dash Lite Game"></canvas>
-  </div>
+<canvas id="game" width="600" height="150" aria-label="Geometry Dash Lite Game"></canvas>
 
-  <section id="support" aria-label="Support me section">
-    <h2>Support Me</h2>
-    <a href="https://wtfiu.github.io/Dono-website/" ta
+<script>
+  const canvas = document.getElementById('game');
+  const ctx = canvas.getContext('2d');
+
+  const GAME_WIDTH = canvas.width;
+  const GAME_HEIGHT = canvas.height;
+
+  let player = { x: 50, y: GAME_HEIGHT - 40, width: 30, height: 30, velocityY: 0 };
+  const gravity = 0.8;
+  const jumpPower = 14;
+  let isJumping = false;
+  let obstacles = [];
+  const obstacleSpeed = 5;
+  let frameCount = 0;
+  let score = 0;
+  let gameOver = false;
+
+  function spawnObstacle() {
+    obstacles.push({ x: GAME_WIDTH, y: GAME_HEIGHT - 40, width: 20, height: 40 });
+  }
+
+  function resetGame() {
+    obstacles = [];
+    player.y = GAME_HEIGHT - player.height - 10;
+    player.velocityY = 0;
+    isJumping = false;
+    score = 0;
+    gameOver = false;
+    frameCount = 0;
+  }
+
+  function update() {
+    if (gameOver) return;
+
+    player.velocityY += gravity;
+    player.y += player.velocityY;
+
+    if (player.y > GAME_HEIGHT - player.height - 10) {
+      player.y = GAME_HEIGHT - player.height - 10;
+      player.velocityY = 0;
+      isJumping = false;
+    }
+
+    frameCount++;
+    if (frameCount % 90 === 0) spawnObstacle();
+
+    obstacles.forEach((obs, i) => {
+      obs.x -= obstacleSpeed;
+      if (obs.x + obs.width < 0) {
+        obstacles.splice(i, 1);
+        score++;
+      }
+    });
+
+    for (const obs of obstacles) {
+      if (
+        player.x < obs.x + obs.width &&
+        player.x + player.width > obs.x &&
+        player.y < obs.y + obs.height &&
+        player.y + player.height > obs.y
+      ) {
+        gameOver = true;
+      }
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
+    ctx.fillStyle = '#5ac8fa';
+    ctx.fillRect(player.x, player.y, player.width, player.height);
+
+    ctx.fillStyle = '#f54e42';
+    obstacles.forEach(o => ctx.fillRect(o.x, o.y, o.width, o.height));
+
+    ctx.strokeStyle = '#4aa1f3';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(0, GAME_HEIGHT - 10);
+    ctx.lineTo(GAME_WIDTH, GAME_HEIGHT - 10);
+    ctx.stroke();
+
+    ctx.fillStyle = '#82caff';
+    ctx.font = '20px Segoe UI, Tahoma, Geneva, Verdana, sans-serif';
+    ctx.fillText('Score: ' + score, 10, 30);
+
+    if (gameOver) {
+      ctx.fillStyle = '#f54e42';
+      ctx.font = '40px Segoe UI, Tahoma, Geneva, Verdana, sans-serif';
+      ctx.fillText('Game Over', GAME_WIDTH / 2 - 100, GAME_HEIGHT / 2);
+      ctx.font = '20px Segoe UI, Tahoma, Geneva, Verdana, sans-serif';
+      ctx.fillText('Press Space to Restart', GAME_WIDTH / 2 - 110, GAME_HEIGHT / 2 + 30);
+    }
+  }
+
+  function gameLoop() {
+    update();
+    draw();
+    requestAnimationFrame(gameLoop);
+  }
+
+  window.addEventListener('keydown', e => {
+    if (e.code === 'Space' || e.code === 'ArrowUp') {
+      if (!gameOver && !isJumping) {
+        player.velocityY = -jumpPower;
+        isJumping = true;
+      } else if (gameOver) {
+        resetGame();
+      }
+    }
+  });
+
+  resetGame();
+  gameLoop();
+</script>
+</body>
+</html>
