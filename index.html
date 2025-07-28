@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Geometry Dash Lite - WTIFU</title>
+<style>
+  :root {
+    --bg-dark: #121214;
+    --bg-light: #f0f0f0;
+    --text-dark: #e0e0e0;
+    --text-light: #111;
+    --accent: #5ac8fa;
+    --accent-dark: #4aa1f3;
+    --button-bg: #2e2f34;
+    --button-hover: #4aa1f3;
+  }
+
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    transition: background-color 0.4s, color 0.4s;
+  }
+  header {
+    padding: 1rem 2rem;
+    text-align: center;
+    background-color: var(--button-bg);
+    box-shadow: 0 3px 8px rgba(42, 132, 255, 0.3);
+  }
+  header h1 {
+    margin: 0;
+    color: var(--accent);
+    font-size: 2rem;
+  }
+
+  #theme-toggle {
+    margin-top: 0.5rem;
+    cursor: pointer;
+    background: var(--button-bg);
+    color: var(--text-dark);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  #theme-toggle:hover {
+    background: var(--button-hover);
+    color: var(--text-light);
+  }
+
+  main {
+    flex-grow: 1;
+    max-width: 800px;
+    margin: 2rem auto 1rem;
+    padding: 0 1rem;
+    text-align: center;
+  }
+
+  #game-container {
+    position: relative;
+    margin: 1rem auto 2rem;
+    width: 100%;
+    max-width: 600px;
+    height: 150px;
+    border: 3px solid var(--accent);
+    border-radius: 12px;
+    background: #222;
+    overflow: hidden;
+  }
+
+  canvas {
+    display: block;
+    margin: 0 auto;
+    background: #121214;
+  }
+
+  #support {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border: 2px solid var(--accent);
+    border-radius: 12px;
+    background-color: #222;
+    box-shadow: 0 0 10px var(--accent);
+  }
+
+  #support h2 {
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  #support a {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: var(--accent);
+    color: #121214;
+    font-weight: 700;
+    border-radius: 8px;
+    text-decoration: none;
+    box-shadow: 0 5px 10px rgba(90, 200, 250, 0.7);
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+  #support a:hover {
+    background-color: #3bb7ff;
+    box-shadow: 0 7px 15px rgba(90, 200, 250, 1);
+  }
+
+  footer {
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.9rem;
+    color: #777;
+    background: #111;
+  }
+
+  /* Light mode overrides */
+  body.light {
+    background-color: var(--bg-light);
+    color: var(--text-light);
+  }
+  body.light header {
+    background-color: #dbeeff;
+    box-shadow: 0 3px 8px rgba(90, 200, 250, 0.5);
+  }
+  body.light #game-container {
+    background: #f0f0f0;
+    border-color: #4aa1f3;
+  }
+  body.light #support {
+    background: #e6f3ff;
+    border-color: #4aa1f3;
+    box-shadow: 0 0 10px #4aa1f3;
+  }
+  body.light #support a {
+    background: #4aa1f3;
+    color: #fff;
+    box-shadow: 0 5px 10px rgba(74, 161, 243, 0.7);
+  }
+  body.light #support a:hover {
+    background-color: #3a93dd;
+    box-shadow: 0 7px 15px rgba(74, 161, 243, 1);
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    #game-container {
+      height: 120px;
+    }
+    header h1 {
+      font-size: 1.5rem;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Geometry Dash Lite</h1>
+  <button id="theme-toggle" aria-label="Toggle dark/light mode">🌓 Toggle Light/Dark Mode</button>
+</header>
+<main>
+  <div id="game-container">
+    <canvas id="game" width="600" height="150" aria-label="Geometry Dash Lite Game"></canvas>
+  </div>
+
+  <section id="support" aria-label="Support me section">
+    <h2>Support Me</h2>
+    <a href="https://wtfiu.github.io/Dono-website/" ta
